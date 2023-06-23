@@ -1,5 +1,5 @@
 import unittest
-from client3 import getDataPoint
+from client3 import getDataPoint,getRatio
 
 class ClientTest(unittest.TestCase):
   def test_getDataPoint_calculatePrice(self):
@@ -22,21 +22,18 @@ class ClientTest(unittest.TestCase):
 
   """ ------------ Add more unit tests ------------ """
 
-  def test_getRatio_calculatePriceBidEqualOne(self):
-    quotes = [
-      {'top_ask': {'price': 112.39, 'size': 91}, 'timestamp': '2019-03-06 06:40:35.041441', 'top_bid': {'price': 112.27, 'size': 91}, 'id': '0.749348412931592', 'stock': 'ABC'},
-      {'top_ask': {'price': 111.68, 'size': 33}, 'timestamp': '2019-03-06 06:40:35.041441','top_bid': {'price': 112.39, 'size': 54}, 'id': '0.749348412931592', 'stock': 'DEF'}
-    ]
-    for quote in quotes:
-      self.assertEqual(((quote['top_ask']['price'] + quote['top_bid']['price']) / 2)/((quote['top_ask']['price'] + quote['top_bid']['price']) / 2), 1)
 
-  def test_getRatio_calculatePriceBidNotEqualOne(self):
+  def test_getRatio_calculateRatioEqualRatioTwoPrices(self):
     quotes = [
       {'top_ask': {'price': 111.65, 'size': 74}, 'timestamp': '2019-03-08 23:35:56.746472', 'top_bid': {'price': 112.27, 'size': 91}, 'id': '0.23883877413463706', 'stock': 'ABC'},
       {'top_ask': {'price': 111.68, 'size': 33}, 'timestamp': '2019-03-08 23:35:56.746472','top_bid': {'price': 112.39, 'size': 54}, 'id': '0.23883877413463706', 'stock': 'DEF'}
     ]
     for quote in quotes:
-      self.assertNotEqual(((quote['top_ask']['price'] + quote['top_bid']['price']) / 2)/((quote['top_ask']['price'] + quote['top_bid']['price']) / 2), 1.00001)
+      price_a = quote['top_ask']['price']+quote['top_bid']['price']/2
+      price_b = quote['top_ask']['price']+quote['top_bid']['price']/2
+      print(getRatio(price_a,price_b),price_a/price_b)
+      self.assertEqual(getRatio(price_a,price_b),price_a/price_b)
+
 
 
 if __name__ == '__main__':
